@@ -7,19 +7,140 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="login-container">
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
         <div class="login-box">
             <h1>Complaint Management</h1>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" type="text" placeholder="Enter username">
+                <input type="text" id="username" placeholder="Enter username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input id="password" type="password" placeholder="Enter password">
+                <input type="password" id="password" placeholder="Enter password">
             </div>
-            <button class="btn">Login</button>
-            <p class="hint">Use the demo credentials shared in class.</p>
+            <button class="btn" onclick="login()">Login</button>
+            
+            <div class="demo-credentials">
+                <h3>Demo Credentials:</h3>
+                <p><strong>User:</strong> user123 / pass123</p>
+                <p><strong>Admin:</strong> admin / admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="userDashboard" class="hidden">
+        <div class="header">
+            <div class="header-content">
+                <h1>Complaint Management System</h1>
+                <div class="user-info">
+                    <span id="userDisplayName">User</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchUserTab('myComplaints')">My Complaints</button>
+                <button class="tab" onclick="switchUserTab('newComplaint')">New Complaint</button>
+            </div>
+
+            <!-- My Complaints Tab -->
+            <div id="myComplaints">
+                <div id="userComplaintsList"></div>
+            </div>
+
+            <!-- New Complaint Tab -->
+            <div id="newComplaint" class="hidden">
+                <div class="card">
+                    <h2 style="margin-bottom: 20px;">Submit New Complaint</h2>
+                    <div class="form-group">
+                        <label for="complaintTitle">Title</label>
+                        <input type="text" id="complaintTitle" placeholder="Brief title for your complaint">
+                    </div>
+                    <div class="form-group">
+                        <label for="complaintCategory">Category</label>
+                        <select id="complaintCategory">
+                            <option>Infrastructure</option>
+                            <option>Service</option>
+                            <option>Staff Behavior</option>
+                            <option>Facilities</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="complaintDescription">Description</label>
+                        <textarea id="complaintDescription" placeholder="Describe your complaint in detail..."></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="submitComplaint()">Submit Complaint</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="hidden">
+        <div class="header">
+            <div class="header-content">
+                <h1>Admin Dashboard</h1>
+                <div class="user-info">
+                    <span>Admin</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalComplaints">0</div>
+                    <div class="stat-label">Total Complaints</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="acceptedCount">0</div>
+                    <div class="stat-label">Accepted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="processingCount">0</div>
+                    <div class="stat-label">Processing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedCount">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchAdminTab('complaints')">All Complaints</button>
+                <button class="tab" onclick="switchAdminTab('users')">All Users</button>
+            </div>
+
+            <!-- Complaints Tab -->
+            <div id="complaintsTab">
+                <div id="adminComplaintsList"></div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="usersTab" class="hidden">
+                <div class="card">
+                    <h2 style="margin-bottom: 20px;">Registered Users</h2>
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Complaints</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>

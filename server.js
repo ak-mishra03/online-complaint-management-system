@@ -49,8 +49,27 @@ app.post("/login", async (req, res) => {
     // User gets redirected to their dashboard
     res.redirect(`/dashboard/${user._id}`);
 });
+
+// Display user dashboard
+app.get("/dashboard/:id", async (req, res) => {
+    const userId = req.params.id;
+
+    // Invalid ObjectId check
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.render("error", { message: "Invalid dashboard URL!" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+        return res.render("error", { message: "User account not found!" });
+    }
+
+    const complaints = await Complaint.find({ user: userId });
+    res.render("userDashboard", { user, complaints });
+});
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
+
 

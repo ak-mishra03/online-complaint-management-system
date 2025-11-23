@@ -93,10 +93,37 @@ app.post("/complaint", async (req, res) => {
 
     res.redirect(`/dashboard/${userId}`);
 });
+
+// Update complaint status (Admin only)
+app.post("/complaint/status/:id", async (req, res) => {
+    const id = req.params.id;
+
+    // Validate complaint ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.render("error", { message: "Invalid complaint ID!" });
+    }
+
+    const complaint = await Complaint.findById(id);
+    if (!complaint) {
+        return res.render("error", { message: "Complaint not found!" });
+    }
+
+    await Complaint.findByIdAndUpdate(id, {
+        status: req.body.status,
+        updatedAt: new Date()
+    });
+
+    const complaints = await Complaint.find().populate("user");
+    const users = await User.find();
+
+    res.render("adminDashboard", { complaints, users });
+});
+
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
+
 
 
 

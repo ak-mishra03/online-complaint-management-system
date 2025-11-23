@@ -67,9 +67,36 @@ app.get("/dashboard/:id", async (req, res) => {
     const complaints = await Complaint.find({ user: userId });
     res.render("userDashboard", { user, complaints });
 });
+
+// Submit a new complaint
+app.post("/complaint", async (req, res) => {
+    const { title, category, description, userId } = req.body;
+
+    // Required fields check
+    if (!title || !category || !description) {
+        return res.render("error", { message: "All fields are required!" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+        return res.render("error", { message: "Invalid user account!" });
+    }
+
+    // Create complaint
+    await new Complaint({
+        title,
+        category,
+        description,
+        user: userId,
+        status: "Pending"
+    }).save();
+
+    res.redirect(`/dashboard/${userId}`);
+});
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
+
 
 

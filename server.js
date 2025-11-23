@@ -124,10 +124,16 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
 });
 
+// 404 - Page not found
+app.use((req, res) => {
+    res.status(404).render("error", { message: "The page you are looking for does not exist." });
+});
+
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
+
 
 
 

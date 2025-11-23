@@ -119,10 +119,16 @@ app.post("/complaint/status/:id", async (req, res) => {
     res.render("adminDashboard", { complaints, users });
 });
 
+// Logout user
+app.get("/logout", (req, res) => {
+    res.redirect("/");
+});
+
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
+
 
 
 

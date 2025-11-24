@@ -21,10 +21,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
 
-const PORT = process.env.PORT || 3000;
-
-
 // ---------------------- ROUTES ---------------------- //
+
 // Login page
 app.get("/", (req, res) => {
     res.render("login");
@@ -129,13 +127,8 @@ app.use((req, res) => {
     res.status(404).render("error", { message: "The page you are looking for does not exist." });
 });
 
+const PORT = process.env.PORT || 3000;
 // Start server
 app.listen(PORT, () =>
     console.log("Server running ")
 );
-
-
-
-
-
-

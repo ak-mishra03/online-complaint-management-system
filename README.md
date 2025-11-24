@@ -29,23 +29,21 @@ An online Complaint Management System built with Node.js, Express, MongoDB (Mong
 ## Project Structure
 
 project-root/
-    ├── models/
-    │   ├── Complaint.js          # Complaint schema & model
-    │   └── User.js               # User schema & model
-    ├── views/
-    │   ├── adminDashboard.ejs    # Admin dashboard
-    │   ├── error.ejs             # Error page
-    │   ├── login.ejs             # Login page
-    │   └── userDashboard.ejs     # User dashboard
-    ├── public/
-    │   └── styles.css            # Global stylesheet
-    ├── seed.js                   # Demo data seeder
-    ├── server.js                 # Main Express server & routes
-    ├── .env                      # Environment variables
-    ├── package.json
-    └── README.md
-
----
+    models/
+        Complaint.js          # Complaint schema & model
+        User.js               # User schema & model
+    views/
+        adminDashboard.ejs    # Admin dashboard
+        error.ejs             # Error page
+        login.ejs             # Login page
+        userDashboard.ejs     # User dashboard
+    public/
+        styles.css            # Global stylesheet
+    seed.js                   # Demo data seeder
+    server.js                 # Main Express server & routes
+    .env                      # Environment variables
+    package.json
+    README.md
 
 ## Environment Variables
 

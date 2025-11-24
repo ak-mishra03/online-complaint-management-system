@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-content">
+        <h1>Admin Dashboard</h1>
+        <div class="user-info">
+            <span>Admin</span>
+            <a href="/logout"><button class="logout-btn">Logout</button></a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number"><%= complaints.length %></div>
+            <div class="stat-label">Total Complaints</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">
+                <%= complaints.filter(c => c.status === "Accepted").length %>
+            </div>
+            <div class="stat-label">Accepted</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">
+                <%= complaints.filter(c => c.status === "Processing").length %>
+            </div>
+            <div class="stat-label">Processing</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">
+                <%= complaints.filter(c => c.status === "Completed").length %>
+            </div>
+            <div class="stat-label">Completed</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" id="tab-complaints" onclick="switchAdminTab('complaintsTab')">All Complaints</button>
+        <button class="tab" id="tab-users" onclick="switchAdminTab('usersTab')">All Users</button>
+    </div>
+
+    <!-- Complaints Tab -->
+    <div id="complaintsTab">
+        <% complaints.forEach(c => { %>
+            <div class="card">
+                <div class="card-header">
+                    <h3><%= c.title %></h3>
+
+                    <% if (c.status === "Accepted") { %>
+                        <span class="status-badge status-accepted">Accepted</span>
+                    <% } else if (c.status === "Processing") { %>
+                        <span class="status-badge status-processing">Processing</span>
+                    <% } else if (c.status === "Completed") { %>
+                        <span class="status-badge status-completed">Completed</span>
+                    <% } else { %>
+                        <span class="status-badge status-pending">Pending</span>
+                    <% } %>
+                </div>
+
+                <div class="complaint-details">
+                    <div class="detail-row">
+                        <span class="detail-label">User:</span>
+                        <span><%= c.user.name %></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Category:</span>
+                        <span><%= c.category %></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description:</span>
+                        <span><%= c.description %></span>
+                    </div>
+                </div>
+
+                <form action="/complaint/status/<%= c._id %>" method="POST" class="actions">
+                    <select name="status" class="btn-small">
+                        <option <%= c.status === "Pending" ? "selected" : "" %>>Pending</option>
+                        <option <%= c.status === "Accepted" ? "selected" : "" %>>Accepted</option>
+                        <option <%= c.status === "Processing" ? "selected" : "" %>>Processing</option>
+                        <option <%= c.status === "Completed" ? "selected" : "" %>>Completed</option>
+                    </select>
+                    <button class="btn-small btn">Update</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="usersTab" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Registered Users</h2>
+
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Complaints</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% users.forEach(u => { %>
+                        <tr>
+                            <td><%= u.name %></td>
+                            <td><%= u.email %></td>
+                            <td><%= u.complaints.length %></td>
+                            <td><%= u.createdAt.toDateString() %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function switchAdminTab(selected) {
+    const complaintsTab = document.getElementById("complaintsTab");
+    const usersTab = document.getElementById("usersTab");
+
+    const tab1 = document.getElementById("tab-complaints");
+    const tab2 = document.getElementById("tab-users");
+
+    if (selected === "complaintsTab") {
+        complaintsTab.classList.remove("hidden");
+        usersTab.classList.add("hidden");
+
+        tab1.classList.add("active");
+        tab2.classList.remove("active");
+    } else {
+        complaintsTab.classList.add("hidden");
+        usersTab.classList.remove("hidden");
+
+        tab1.classList.remove("active");
+        tab2.classList.add("active");
+    }
+}
+</script>
+
+</body>
+</html>

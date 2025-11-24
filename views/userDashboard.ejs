@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-content">
+        <h1>Complaint Management System</h1>
+        <div class="user-info">
+            <span><%= user.name %></span>
+            <a href="/logout"><button class="logout-btn">Logout</button></a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" id="tab-my" onclick="switchUserTab('myComplaints')">My Complaints</button>
+        <button class="tab" id="tab-new" onclick="switchUserTab('newComplaint')">New Complaint</button>
+    </div>
+
+    <!-- My Complaints -->
+    <div id="myComplaints">
+        <% if (complaints.length === 0) { %>
+            <p>No complaints submitted yet.</p>
+        <% } %>
+
+        <% complaints.forEach(c => { %>
+            <div class="card">
+                <div class="card-header">
+                    <h3><%= c.title %></h3>
+
+                    <% if (c.status === "Accepted") { %>
+                        <span class="status-badge status-accepted">Accepted</span>
+                    <% } else if (c.status === "Processing") { %>
+                        <span class="status-badge status-processing">Processing</span>
+                    <% } else if (c.status === "Completed") { %>
+                        <span class="status-badge status-completed">Completed</span>
+                    <% } else { %>
+                        <span class="status-badge status-pending">Pending</span>
+                    <% } %>
+                </div>
+
+                <div class="complaint-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Category:</span>
+                        <span><%= c.category %></span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Description:</span>
+                        <span><%= c.description %></span>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+    <!-- New Complaint -->
+    <div id="newComplaint" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Submit New Complaint</h2>
+
+            <form action="/complaint" method="POST">
+                <input type="hidden" name="userId" value="<%= user._id %>">
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input name="title" type="text" placeholder="Brief title for your complaint" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category">
+                        <option>Infrastructure</option>
+                        <option>Service</option>
+                        <option>Staff Behavior</option>
+                        <option>Facilities</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" placeholder="Describe your complaint in detail..." required></textarea>
+                </div>
+
+                <button class="btn">Submit Complaint</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function switchUserTab(tabId) {
+    const myTab = document.getElementById("myComplaints");
+    const newTab = document.getElementById("newComplaint");
+
+    const btnMy = document.getElementById("tab-my");
+    const btnNew = document.getElementById("tab-new");
+
+    if (tabId === "myComplaints") {
+        myTab.classList.remove("hidden");
+        newTab.classList.add("hidden");
+
+        btnMy.classList.add("active");
+        btnNew.classList.remove("active");
+    } 
+    else {
+        myTab.classList.add("hidden");
+        newTab.classList.remove("hidden");
+
+        btnMy.classList.remove("active");
+        btnNew.classList.add("active");
+    }
+}
+</script>
+
+</body>
+</html>
